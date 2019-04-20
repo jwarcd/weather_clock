@@ -15,6 +15,10 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 - [ESP8266 Weather Station Library by ThingPulse](https://github.com/squix78/esp8266-weather-station)
 - [DFRobotDFPlayerMini](https://github.com/DFRobot/DFRobotDFPlayerMini)
 
+### Hardware:
+
+### Pics:
+
 ![Weather Clock](/docs/weather_clock1.jpg)
 
 ![Weather Clock](/docs/weather_clock2.jpg)
