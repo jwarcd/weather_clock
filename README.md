@@ -1,5 +1,6 @@
 # Arduino Weather Alarm Clock
 
+This is an touch screen ESP8266 Weather Clock with mp3 Alarm sounds. 
 Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn.adafruit.com/wifi-weather-station-with-tft-display/overview?view=all] project.
 
 ### Libraries:
