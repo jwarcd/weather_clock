@@ -1,4 +1,4 @@
-# Arduino Weather Clock
+# Arduino Weather Alarm Clock
 
 Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn.adafruit.com/wifi-weather-station-with-tft-display/overview?view=all] project.
 
