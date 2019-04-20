@@ -20,3 +20,5 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 ![Weather Clock](/docs/alarm.jpg)
 
 ![Weather Clock](/docs/weather_clock_inside.jpg)
+
+![Weather Clock](/docs/WeatherClock_bb.png)
