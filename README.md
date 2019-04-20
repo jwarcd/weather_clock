@@ -5,7 +5,7 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 ### Libraries:
 
 - [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
-- [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341)
+- [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341) OR
 - [Adafruit STMPE610 Library](https://github.com/adafruit/Adafruit_STMPE610)
 - [Adafruid Image Reader](https://github.com/adafruit/Adafruit_ImageReader)
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
@@ -18,7 +18,7 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 ### Hardware:
 
 - [ESP8266](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/)
-- [Adafruit 2.4" TFT Feather Wing](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing/)
+- [Adafruit 2.4" TFT Feather Wing](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing/) OR
 - [2.8" TFT LCD with Cap Touch Breakout Board w/MicroSD Socket](https://www.adafruit.com/product/2090)
 - DS3231 RTC
 - DFPlayer Mini 
