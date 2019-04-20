@@ -17,9 +17,11 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 
 ### Hardware:
 
-
-DS3231 RTC
-DFPlayer Mini 
+- [ESP8266](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/)
+- [Adafruit 2.4" TFT Feather Wing](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing/)
+- [2.8" TFT LCD with Cap Touch Breakout Board w/MicroSD Socket](https://www.adafruit.com/product/2090)
+- DS3231 RTC
+- DFPlayer Mini 
 
 ### Pics:
 
