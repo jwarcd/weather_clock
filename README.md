@@ -10,7 +10,7 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 - [WiFiManager for ESP8266](https://github.com/tzapu/WiFiManager)
 - [JSON Streaming Parser](https://github.com/squix78/json-streaming-parser)
 - [ESP8266 Weather Station Library by ThingPulse](https://github.com/squix78/esp8266-weather-station)
-
+- (DFRobotDFPlayerMini)(https://github.com/DFRobot/DFRobotDFPlayerMini)
 
 ![Weather Clock](/docs/weather_clock1.jpg)
 
