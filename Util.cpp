@@ -1,20 +1,20 @@
 /**The MIT License (MIT)
-Copyright (c) 2017 by Jared Gaillard
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  Copyright (c) 2017 by Jared Gaillard
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
 */
 
 extern unsigned int __bss_end;
@@ -22,77 +22,86 @@ extern unsigned int __heap_start;
 extern void *__brkval;
 
 #include "Util.h"
-#include <Wire.h> 
+#include <Wire.h>
+#include <time.h>
 
-// Anything worse than or equal to this will show 0 bars. 
+// Anything worse than or equal to this will show 0 bars.
 #define MIN_RSSI  -100
 
 // Anything better than or equal to this will show the max bars.
 #define MAX_RSSI  -55
 
 /**
- * Calculates the level of the signal. This should be used any time a signal
- * is being shown.
- *
- * @param rssi The power of the signal measured in RSSI.
- * @param numLevels The number of levels to consider in the calculated
- *            level.
- * @return A level of the signal, given in the range of 0 to numLevels-1
- *         (both inclusive).
- */
+   Calculates the level of the signal. This should be used any time a signal
+   is being shown.
+
+   @param rssi The power of the signal measured in RSSI.
+   @param numLevels The number of levels to consider in the calculated
+              level.
+   @return A level of the signal, given in the range of 0 to numLevels-1
+           (both inclusive).
+*/
 int Util::calculateSignalLevel(int rssi, int numLevels) {
-    if (rssi <= MIN_RSSI) {
-        return 0;
-    } else if (rssi >= MAX_RSSI) {
-        return numLevels - 1;
-    } else {
-        float inputRange = (MAX_RSSI - MIN_RSSI);
-        float outputRange = (numLevels - 1);
-        return (int)((float)(rssi - MIN_RSSI) * outputRange / inputRange);
-    }
+  if (rssi <= MIN_RSSI) {
+    return 0;
+  } else if (rssi >= MAX_RSSI) {
+    return numLevels - 1;
+  } else {
+    float inputRange = (MAX_RSSI - MIN_RSSI);
+    float outputRange = (numLevels - 1);
+    return (int)((float)(rssi - MIN_RSSI) * outputRange / inputRange);
+  }
+}
+
+String Util::getTime(time_t *timestamp) {
+  struct tm *timeInfo = gmtime(timestamp);
+
+  char buf[6];
+  sprintf(buf, "%02d:%02d", timeInfo->tm_hour, timeInfo->tm_min);
+  return String(buf);
 }
 
 long Util::time2long(uint16_t days, uint8_t h, uint8_t m, uint8_t s) {
-    return ((days * 24L + h) * 60 + m) * 60 + s;
+  return ((days * 24L + h) * 60 + m) * 60 + s;
 }
 
-String Util::formatTime(DateTime dateTime, bool hour24, bool ampm){
-    return formatTime(dateTime.hour(), dateTime.minute(), hour24, ampm);
+String Util::formatTime(DateTime dateTime, bool hour24, bool ampm) {
+  return formatTime(dateTime.hour(), dateTime.minute(), hour24, ampm);
 }
 
-String Util::formatTime(int hour, int minute, bool hour24, bool ampm){
+String Util::formatTime(int hour, int minute, bool hour24, bool ampm) {
   char timeText[20];
   bool isPM = false;
 
-  if (!hour24){   
-      if (hour == 0)
-        hour = 12;
-      else if ( hour > 12){
-        isPM = true;
-        hour -= 12;
-      }
+  if (!hour24) {
+    if (hour == 0)
+      hour = 12;
+    else if ( hour > 12) {
+      isPM = true;
+      hour -= 12;
+    }
 
-      if (ampm){
-        sprintf_P(timeText, PSTR("%d:%02d%s"), hour, minute, isPM ? "pm" : "am");
-      }
-      else {
-        sprintf_P(timeText, PSTR("%d:%02d"), hour, minute);
-      }
+    if (ampm) {
+      sprintf_P(timeText, PSTR("%d:%02d%s"), hour, minute, isPM ? "pm" : "am");
     }
     else {
-      sprintf_P(timeText, (char *) F("%d:%02d"), hour, minute);
+      sprintf_P(timeText, PSTR("%d:%02d"), hour, minute);
     }
+  }
+  else {
+    sprintf_P(timeText, (char *) F("%d:%02d"), hour, minute);
+  }
 
   return String(timeText);
 }
 
-String Util::formatTime(int hour, int minute, int second){
+String Util::formatTime(int hour, int minute, int second) {
   char timeText[20];
   sprintf_P(timeText, "%d:%02d:%02d", hour, minute, second);
   return String(timeText);
 }
 
-void Util::clearBusI2C(){
+void Util::clearBusI2C() {
   int rtn = I2C_ClearBus(); // clear the I2C bus first before calling Wire.begin()
   if (rtn != 0) {
     Sprintln(F("I2C bus error. Could not clear"));
@@ -111,15 +120,15 @@ void Util::clearBusI2C(){
 }
 
 /**
- * This routine turns off the I2C bus and clears it
- * on return SCA and SCL pins are tri-state inputs.
- * You need to call Wire.begin() after this to re-enable I2C
- * This routine does NOT use the Wire library at all.
- *
- * returns 0 if bus cleared
- *         1 if SCL held low.
- *         2 if SDA held low by slave clock stretch for > 2sec
- */
+   This routine turns off the I2C bus and clears it
+   on return SCA and SCL pins are tri-state inputs.
+   You need to call Wire.begin() after this to re-enable I2C
+   This routine does NOT use the Wire library at all.
+
+   returns 0 if bus cleared
+           1 if SCL held low.
+           2 if SDA held low by slave clock stretch for > 2sec
+*/
 int Util::I2C_ClearBus() {
 #if defined(TWCR) && defined(TWEN)
   TWCR &= ~(_BV(TWEN)); //Disable the Atmel 2-Wire interface so we can control the SDA and SCL pins directly
@@ -135,7 +144,7 @@ int Util::I2C_ClearBus() {
   // before existing sketch confuses the IDE by sending Serial data.
 
   boolean SCL_LOW = (digitalRead(SCL) == LOW); // Check is SCL is Low.
-  if (SCL_LOW) { //If it is held low Arduno cannot become the I2C master. 
+  if (SCL_LOW) { //If it is held low Arduno cannot become the I2C master.
     return 1; //I2C bus error. Could not clear SCL clock line held low
   }
 
@@ -144,7 +153,7 @@ int Util::I2C_ClearBus() {
 
   while (SDA_LOW && (clockCount > 0)) { //  vii. If SDA is Low,
     clockCount--;
-  // Note: I2C bus is open collector so do NOT drive SCL or SDA high.
+    // Note: I2C bus is open collector so do NOT drive SCL or SDA high.
     pinMode(SCL, INPUT); // release SCL pullup so that when made output it will be LOW
     pinMode(SCL, OUTPUT); // then clock SCL Low
     delayMicroseconds(10); //  for >5uS
@@ -182,5 +191,3 @@ int Util::I2C_ClearBus() {
   pinMode(SCL, INPUT);
   return 0; // all ok
 }
-
-

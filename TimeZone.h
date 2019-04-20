@@ -17,12 +17,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <Arduino.h>
-#include <RTClib.h>
-#include "Settings.h"
+#pragma once
 
 #ifndef _TIMEZONE_H
 #define _TIMEZONE_H
+
+#include <Arduino.h>
+#include <RTClib.h>
+#include "Settings.h"
 
 #define UPDATE_TIME_INTERVAL_SECS  60 * 60 // Update every hour
 #define WIFI_DELAY        500
@@ -41,7 +43,7 @@ class TimeZone {
 	  void adjust(DateTime value);
 	  void updateTimeData();
     String getDateString();
-    String getDayString(uint8_t dayOfWeek);
+    static String getDayString(uint8_t dayOfWeek);
     String getMonthString(uint8_t month);
    
   private:
@@ -61,4 +63,3 @@ class TimeZone {
 };
 
 #endif
-

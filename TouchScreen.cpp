@@ -18,6 +18,7 @@ SOFTWARE.
 */
 
 #include "TouchScreen.h"
+#include "Settings.h"
 
 TouchScreen::TouchScreen(Adafruit_ILI9341 *tft) {
   _tft = tft;
@@ -27,7 +28,7 @@ bool TouchScreen::begin(){
   bool result = _touch.begin();
 
 #ifdef STMPE610
-  // we'll use STMPE's GPIO 2 for backlight control
+  // we'll use STMPE's GPIO 2 for backlight control610
   _touch.writeRegister8(STMPE_GPIO_DIR, _BV(2));
   _touch.writeRegister8(STMPE_GPIO_ALT_FUNCT, _BV(2));
   // backlight on

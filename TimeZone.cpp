@@ -1,20 +1,20 @@
 /**The MIT License (MIT)
-Copyright (c) 2017 by Jared Gaillard
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  Copyright (c) 2017 by Jared Gaillard
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
 */
 
 #include "TimeZone.h"
@@ -25,31 +25,29 @@ SOFTWARE.
 #include <NtpClientLib.h> // https://github.com/gmag11/NtpClient
 #include <ArduinoJson.h>
 
-//#define HTTP_DEBUG 1
-
 extern "C" {
-  #include "user_interface.h"
+#include "user_interface.h"
 }
 
-TimeZone::TimeZone(Settings* settings) { 
+TimeZone::TimeZone(Settings* settings) {
   _settings = settings;
   ssid[0] = '\0';
 }
 
-void TimeZone::begin(){
+void TimeZone::begin() {
   Sprintln();
-    
+
   if (!_rtc.begin()) {
     Sprintln(F("Couldn't find RTC"));
     while (1);
   }
-  
+
   NTP.onNTPSyncEvent([&](NTPSyncEvent_t event) {
     Sprintln(F("NTP.onNTPSyncEvent"));
     ntpSyncEventTriggered = true;
     if (event) {
       Sprint(F("Time Sync error: "));
-      if (event == noResponse){
+      if (event == noResponse) {
         Sprintln(F("NTP server not reachable"));
       }
       else if (event == invalidAddress) {
@@ -60,7 +58,7 @@ void TimeZone::begin(){
       Sprint(F("Got NTP time: "));
       Sprintln(NTP.getTimeDateString(NTP.getLastNTPSync()));
     }
-  }); 
+  });
 
   if (!NTP.begin(F("pool.ntp.org"), 0, false)) {
     Sprintln(F("NTP.begin failed."));
@@ -68,177 +66,172 @@ void TimeZone::begin(){
   }
 }
 
-DateTime TimeZone::now(){
-	DateTime nowTime = _rtc.now();
+DateTime TimeZone::now() {
+  DateTime nowTime = _rtc.now();
   //String timeText = String(nowTime.hour()) + ":" + String(nowTime.minute()) + ":" + String(nowTime.second());
   //Sprint(F("nowTime = "));
   //Sprintln(timeText);
 
   int offsetSeconds = _settings->DstOffset + _settings->RawTimeZoneOffset;
-	nowTime = DateTime(nowTime.unixtime() + offsetSeconds);
+  nowTime = DateTime(nowTime.unixtime() + offsetSeconds);
 
   //timeText = String(nowTime.hour()) + ":" + String(nowTime.minute()) + ":" + String(nowTime.second());
   //Sprint(F("nowTime2 = "));
   //Sprintln(timeText);
-  
+
   return nowTime;
 }
 
-void TimeZone::adjust(DateTime value){
-	_rtc.adjust(value);
+void TimeZone::adjust(DateTime value) {
+  _rtc.adjust(value);
 }
 
-String TimeZone::getDateString(){
-    DateTime nowTime = now();
+String TimeZone::getDateString() {
+  DateTime nowTime = now();
 
-    uint8_t dayOfWeek = nowTime.dayOfTheWeek();
-    String dayText = getDayString(dayOfWeek);
+  uint8_t dayOfWeek = nowTime.dayOfTheWeek();
+  String dayText = getDayString(dayOfWeek);
 
-    uint8_t month = nowTime.month();
-    String monthText = getMonthString(month);
-    
-    String date = dayText;
-    date += F(", ");
-    date += String(nowTime.day());
-    date += F(" ");
-    date += monthText;
-    //date += F(" ");  
-    //date += String(nowTime.year());  
+  uint8_t month = nowTime.month();
+  String monthText = getMonthString(month);
 
-    return date;
+  String date = dayText;
+  date += F(", ");
+  date += String(nowTime.day());
+  date += F(" ");
+  date += monthText;
+  //date += F(" ");
+  //date += String(nowTime.year());
+
+  return date;
 }
 
-String TimeZone::getDayString(uint8_t dayOfWeek){
-  switch(dayOfWeek){
+String TimeZone::getDayString(uint8_t dayOfWeek) {
+  switch (dayOfWeek) {
     case 0:
       return F("Sun");
     case 1:
       return F("Mon");
     case 2:
-      return F("Tue");      
+      return F("Tue");
     case 3:
-      return F("Wed");    
+      return F("Wed");
     case 4:
-      return F("Thr");     
+      return F("Thr");
     case 5:
-      return F("Fri");   
+      return F("Fri");
     case 6:
-      return F("Sat");          
+      return F("Sat");
     default:
-      return F("Unk");     
+      return F("Unk");
   }
 }
 
-String TimeZone::getMonthString(uint8_t month){
-  switch(month){
+String TimeZone::getMonthString(uint8_t month) {
+  switch (month) {
     case 1:
       return F("Jan");
     case 2:
       return F("Feb");
     case 3:
-      return F("Mar");      
+      return F("Mar");
     case 4:
-      return F("Apr");    
+      return F("Apr");
     case 5:
-      return F("May");     
+      return F("May");
     case 6:
-      return F("Jun");     
+      return F("Jun");
     case 7:
       return F("Jul");
     case 8:
       return F("Aug");
     case 9:
-      return F("Sep");      
+      return F("Sep");
     case 10:
-      return F("Oct");    
+      return F("Oct");
     case 11:
-      return F("Nov");     
+      return F("Nov");
     case 12:
-      return F("Dec");   
+      return F("Dec");
     default:
-      return F("Unk");     
+      return F("Unk");
   }
 }
 
-void TimeZone::updateTimeData(){  
-  if (!ntpSyncEventTriggered){
+void TimeZone::updateTimeData() {
+  if (!ntpSyncEventTriggered) {
     return;
   }
-    
+
   // Check if we should update weather information
-  if (((millis() - lastTimeUpdate) > (1000 * UPDATE_TIME_INTERVAL_SECS)) || (lastTimeUpdate == 0) ) {        
+  if (((millis() - lastTimeUpdate) > (1000 * UPDATE_TIME_INTERVAL_SECS)) || (lastTimeUpdate == 0) ) {
     Sprintln(F("Updating time..."));
 
-    time_t epochTime = NTP.getTime();   
+    time_t epochTime = NTP.getTime();
     DateTime newTime = DateTime(epochTime);
     Sprint(F(" NTP time = "));
     Sprint(newTime.hour());
     Sprint(F(":"));
-    Sprint(newTime.minute());    
+    Sprint(newTime.minute());
     Sprint(F(":"));
-    Sprintln(newTime.second());   
+    Sprintln(newTime.second());
     Sprint(F(" NTP date = "));
     Sprint(newTime.month());
     Sprint(F("/"));
-    Sprint(newTime.day());    
+    Sprint(newTime.day());
     Sprint(F("/"));
-    Sprintln(newTime.year());   
-                    
+    Sprintln(newTime.year());
+
     adjust(newTime);
-  
+
     DateTime nowTime = _rtc.now();
     Sprint(F(" RTC Time = "));
     Sprint(nowTime.hour());
     Sprint(F(":"));
-    Sprint(nowTime.minute());    
+    Sprint(nowTime.minute());
     Sprint(F(":"));
-    Sprintln(nowTime.second());  
+    Sprintln(nowTime.second());
     Sprint(F(" RTC date = "));
     Sprint(nowTime.month());
     Sprint(F("/"));
-    Sprint(nowTime.day());    
+    Sprint(nowTime.day());
     Sprint(F("/"));
-    Sprintln(nowTime.year());    
-                    
+    Sprintln(nowTime.year());
+
     lastTimeUpdate = millis();
 
     scanAndLocateTimeZone();
   }
 }
 
-String TimeZone::getWifiAccessPointJson(){
-  String jsonText; 
-  DynamicJsonBuffer jsonBuffer;
+String TimeZone::getWifiAccessPointJson() {
+  String jsonText;
+  DynamicJsonDocument jsonBuffer(2048);
 
   memset(ssid, 0, MAX_SSID_LEN);
   int n = WiFi.scanNetworks();
-  
+
   if (n == 0) {
     Sprintln(F("No Wifi networks found!"));
   } else {
     Sprint(F("Wifi networks found: "));
-    JsonObject& root = jsonBuffer.createObject();
-    root[F("considerIp")] = F("false");
-    JsonArray& data = root.createNestedArray(F("wifiAccessPoints"));
+    jsonBuffer[F("considerIp")] = F("false");
+    JsonArray data = jsonBuffer.createNestedArray(F("wifiAccessPoints"));
 
     // Only use a max of MAX_NUM_SSID addresses to keep memory usage low
     for (int i = 0; i < n && i < MAX_NUM_SSID; i++) {
-        JsonObject& wifiAP = jsonBuffer.createObject();
-        Sprint(WiFi.SSID(i));
-        Sprint(F(", "));
-        wifiAP[F("macAddress")] = WiFi.BSSIDstr(i);
-        wifiAP[F("signalStrength")] = WiFi.RSSI(i);
-        wifiAP[F("signalToNoiseRatio")] = 0;
-        data.add(wifiAP);
+      DynamicJsonDocument jsonBuffer2(256);
+      JsonObject wifiAP = jsonBuffer2.to<JsonObject>();
+      Sprint(WiFi.SSID(i));
+      Sprint(F(", "));
+      wifiAP[F("macAddress")] = WiFi.BSSIDstr(i);
+      wifiAP[F("signalStrength")] = WiFi.RSSI(i);
+      wifiAP[F("signalToNoiseRatio")] = 0;
+      data.add(wifiAP);
     }
     Sprintln();
-    
- #ifdef DEBUG
-    //root.prettyPrintTo(Serial);
-    //Sprintln();
- #endif
-    
-    root.printTo(jsonText);
+
+    serializeJsonPretty(jsonBuffer, jsonText);
   }
 
   yield();
@@ -246,27 +239,27 @@ String TimeZone::getWifiAccessPointJson(){
   return jsonText;
 }
 
-/* Scan available networks and request Google to determine your location. 
- *  
- * JSON returned from Google API:
- * {
- *  "location": {
- *   "lat": 42.5887338,
- *   "lng": -71.0938992
- *  },
- *  "accuracy": 39.0
- * }
- * 
+/* Scan available networks and request Google to determine your location.
+
+   JSON returned from Google API:
+   {
+    "location": {
+     "lat": 42.5887338,
+     "lng": -71.0938992
+    },
+    "accuracy": 39.0
+   }
+
 */
 bool TimeZone::getLatLong(double &latitude, double &longitude) {
 
   // We only need to get lat, long the first time after power up
-  if (_settings->TimeZoneFound && _settings->Latitude != 0 && _settings->Longitude != 0){
+  if (_settings->TimeZoneFound && _settings->Latitude != 0 && _settings->Longitude != 0) {
     latitude = _settings->Latitude;
     longitude = _settings->Longitude;
     return true;
   }
-  
+
   latitude = 0;
   longitude = 0;
 
@@ -274,25 +267,25 @@ bool TimeZone::getLatLong(double &latitude, double &longitude) {
 
   String postdata = getWifiAccessPointJson();
 
-  //Sprintln("Free RAM2: " + String(system_get_free_heap_size()));
-
   String url = F("/geolocation/v1/geolocate?key=");
   url += String(google_apikey);
   String resultdata;
   int errorCode;
   resultdata = httpsPost(google_apis_url, url, F("application/json"), postdata, errorCode);
 
-  DynamicJsonBuffer  jsonBuffer;
-  JsonObject& res_root = jsonBuffer.parseObject(resultdata);
+  Sprintln("resultdata: " + resultdata);
 
-  if (!res_root.success()) {
-      Sprintln(String(F("getLatLong: JSON parsing failed! result data: ")) + resultdata);
-      return false;
+  DynamicJsonDocument jsonBuffer(2048);
+  DeserializationError error = deserializeJson(jsonBuffer, resultdata);
+
+  if (error) {
+    Sprintln(String(F("getLatLong: JSON parsing failed! result data: ")) + resultdata);
+    return false;
   }
-    
-  latitude = res_root[F("location")][F("lat")];
-  longitude = res_root[F("location")][F("lng")];
-  double accuracy = res_root[F("accuracy")];
+
+  latitude = jsonBuffer[F("location")][F("lat")];
+  longitude = jsonBuffer[F("location")][F("lng")];
+  double accuracy = jsonBuffer[F("accuracy")];
 
   _settings->Latitude = latitude;
   _settings->Longitude = longitude;
@@ -305,24 +298,24 @@ bool TimeZone::getLatLong(double &latitude, double &longitude) {
   Sprint(F(", accuracy: "));
   Serial.println(accuracy, 1);
 #endif
-  
+
   yield();
 
   return true;
 }
 
-/* Find the time zone. 
- * 
- *   JSON returned from Google API:
- *   
- *   {
- *      "dstOffset" : 3600,
- *      "rawOffset" : -18000,
- *      "status" : "OK",
- *      "timeZoneId" : "America/New_York",
- *      "timeZoneName" : "Eastern Daylight Time"
- *   }
- * 
+/* Find the time zone.
+
+     JSON returned from Google API:
+
+     {
+        "dstOffset" : 3600,
+        "rawOffset" : -18000,
+        "status" : "OK",
+        "timeZoneId" : "America/New_York",
+        "timeZoneName" : "Eastern Daylight Time"
+     }
+
 */
 bool TimeZone::getTimeZone() {
   int errorCode;
@@ -334,25 +327,27 @@ bool TimeZone::getTimeZone() {
   double latitude;
   double longitude;
 
-  if (!getLatLong(latitude, longitude)){
+  if (!getLatLong(latitude, longitude)) {
     Sprintln(F("Error getting Lat, Long, using time zone from settings."));
     return false;
   }
 
-  DateTime utcTime =_rtc.now();
+  DateTime utcTime = _rtc.now();
   String url = F("/maps/api/timezone/json?location=");
   url = url + String(latitude) + "," + String(longitude) + String(F("&timestamp=")) + String(utcTime.unixtime()) + String(F("&key=")) + String(google_apikey);
-  
+
   String resultdata = httpsGet(google_maps_apis_url, url, errorCode);
 
-  DynamicJsonBuffer  jsonBuffer2;
-  JsonObject& root2 = jsonBuffer2.parseObject(resultdata);
+  DynamicJsonDocument jsonBuffer2(1024);
+  DeserializationError error = deserializeJson(jsonBuffer2, resultdata);
+  JsonObject root2 = jsonBuffer2.as<JsonObject>();
 
-  if (!root2.success()) {
-    Sprintln(F("JSON parsing failed!"));
+  if (error) {
+    Sprint(F("JSON parsing failed! error: "));
+    Sprintln(error.c_str());
     return false;
-  } 
-    
+  }
+
   _settings->DstOffset = (int)root2[F("dstOffset")];
   _settings->RawTimeZoneOffset = (int)root2[F("rawOffset")];
   _settings->TimeZoneFound = true;
@@ -368,38 +363,41 @@ bool TimeZone::getTimeZone() {
   return true;
 }
 
-/* 
- *  Scan available networks and request Google to determine your location. 
+/*
+    Scan available networks and request Google to determine your location.
 */
 void TimeZone::scanAndLocateTimeZone() {
-    if (getTimeZone()){
-      _settings->save();
-    }
+  if (getTimeZone()) {
+    _settings->save();
+  }
 }
 
 String TimeZone::httpsGet(const char* host, String url,  int &errorCode) {
   WiFiClientSecure client;
-   
+
+  Sprint(F("HOST: "));
+  Sprintln(host);
+  Sprint(F("URL: "));
+  Sprintln(url);
+
+  client.setInsecure();
+
   if (client.connect(host, 443)) {
     client.print(F("GET "));
+    client.print(F("https://"));
+    client.print(String(host));
     client.print(url);
     client.println(F(" HTTP/1.1"));
     client.print(F("Host: "));
-    client.println(host);
+    client.println(String(host));
     client.println(F("Connection: close"));
     client.println();
-    
+
     String response = "";
     while (client.connected()) {
       response = response + client.readString();
     }
     response = response + client.readString();
-    
-#ifdef HTTP_DEBUG    
-    Sprintln(F("GET =========="));
-    Sprintln(response);
-    Sprintln(F("=========="));
-#endif
 
     errorCode = response.substring(response.indexOf(' ') + 1).toInt();
     if (errorCode == 0) {
@@ -418,14 +416,23 @@ String TimeZone::httpsGet(const char* host, String url,  int &errorCode) {
 
 String TimeZone::httpsPost(const char* host, String url, String contentType, String data, int &errorCode) {
   WiFiClientSecure client;
-   
-  if (client.connect(host, 443)) {
+
+  Sprint(F("HOST: "));
+  Sprintln(host);
+  Sprint(F("URL: "));
+  Sprintln(url);
+
+  client.setInsecure();
+
+  if (client.connect(String(host), 443)) {
     client.print(F("POST "));
+    client.print(F("https://"));
+    client.print(String(host));
     client.print(url);
     client.println(F(" HTTP/1.1"));
     client.print(F("Host: "));
-    client.println(host);
-    client.println(F("User-Agent: ESP8266/1.0"));
+    client.println(String(host));
+    client.println(F("Mozilla/5.0 (Linux; Android 6.0.1; Nexus 6P Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.83 Mobile Safari/537.36"));
     client.println(F("Connection: close"));
     client.print(F("Content-Type: "));
     client.println(contentType);
@@ -433,18 +440,12 @@ String TimeZone::httpsPost(const char* host, String url, String contentType, Str
     client.println(data.length());
     client.println();
     client.print(data);
-    
+
     String response;
     while (client.connected()) {
       response = response + client.readString();
     }
     response = response + client.readString();
-    
-#ifdef HTTP_DEBUG    
-    Sprintln(F("POST =========="));
-    Sprintln(response);
-    Sprintln(F("=========="));
-#endif
 
     errorCode = response.substring(response.indexOf(' ') + 1).toInt();
     if (errorCode == 0) {
@@ -460,4 +461,3 @@ String TimeZone::httpsPost(const char* host, String url, String contentType, Str
     return F("Network Unreachable");
   }
 }
-
