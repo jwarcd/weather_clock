@@ -17,10 +17,6 @@ w/*
   SOFTWARE.
 */
 
-#include <Adafruit_MQTT.h>
-#include <Adafruit_MQTT_Client.h>
-#include <Adafruit_MQTT_FONA.h>
-
 #define FS_NO_GLOBALS
 
 #include <Arduino.h>
