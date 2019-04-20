@@ -17,6 +17,10 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 
 ### Hardware:
 
+
+DS3231 RTC
+DFPlayer Mini 
+
 ### Pics:
 
 ![Weather Clock](/docs/weather_clock1.jpg)
