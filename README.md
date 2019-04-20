@@ -6,7 +6,7 @@ Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn
 
 - [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
 - [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341)
-- [Adafruit STMPE610](https://github.com/adafruit/Adafruit_STMPE610)
+- [Adafruit STMPE610 Library](https://github.com/adafruit/Adafruit_STMPE610)
 - [Adafruid Image Reader](https://github.com/adafruit/Adafruit_ImageReader)
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
 - [ESP8266 WifiClient](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266HTTPClient)
