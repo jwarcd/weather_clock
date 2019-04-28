@@ -31,6 +31,8 @@ See more at http://blog.squix.ch
 #include "Settings.h"
 #include <OpenWeatherMapCurrent.h>
 #include <OpenWeatherMapForecast.h>
+#include "SunMoonCalc.h"
+#include "TimeZone.h"
 
 /*
 * 
@@ -39,17 +41,19 @@ See more at http://blog.squix.ch
 class WeatherClient {
   private:
       boolean isMetric = true;
+      TimeZone* _timeZone;
       void doUpdate(String url);
       OpenWeatherMapCurrentData currentWeather;
       OpenWeatherMapForecastData forecasts[MAX_FORECASTS];
       
       Astronomy::MoonData moonData;
+      SunMoonCalc::Result sunAndMoonData;
       uint8_t moonAge = 0;
       String moonAgeImage = "";
       boolean isPM = false;
 
   public:
-    WeatherClient(boolean isMetric);
+    WeatherClient(boolean isMetric, TimeZone* timeZone);
    	void initMetric(boolean isMetric);			
 
     void doUpdate();

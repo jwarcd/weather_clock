@@ -82,6 +82,14 @@ DateTime TimeZone::now() {
   return nowTime;
 }
 
+double TimeZone::getLat() {
+  return latitude;
+}
+
+double TimeZone::getLong() {
+  return longitude;
+}
+
 void TimeZone::adjust(DateTime value) {
   _rtc.adjust(value);
 }
@@ -324,9 +332,6 @@ bool TimeZone::getTimeZone() {
   Sprintln(F("Connecting to Google apis to get location data..."));
 
   //Sprintln("Free RAM: " + String(system_get_free_heap_size()));
-  double latitude;
-  double longitude;
-
   if (!getLatLong(latitude, longitude)) {
     Sprintln(F("Error getting Lat, Long, using time zone from settings."));
     return false;

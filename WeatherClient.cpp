@@ -29,8 +29,9 @@
 #include "Util.h"
 #include "TimeZone.h"
 
-WeatherClient::WeatherClient(boolean _isMetric) {
+WeatherClient::WeatherClient(boolean _isMetric, TimeZone* timeZone) {
   isMetric = _isMetric;
+  _timeZone = timeZone;
 }
 
 // Added by fowlerk, 12/22/16, as an option to change metric setting other than at instantiation
@@ -52,17 +53,70 @@ void WeatherClient::doUpdate() {
   forecastClient->setLanguage(OPEN_WEATHER_MAP_LANGUAGE);
   uint8_t allowedHours[] = {12, 0};
   forecastClient->setAllowedHours(allowedHours, sizeof(allowedHours));
-  forecastClient->updateForecasts(forecasts, OPEN_WEATHER_MAP_APP_ID, OPEN_WEATHER_MAP_LOCATION, MAX_FORECASTS);
+  uint8_t count = forecastClient->updateForecasts(forecasts, OPEN_WEATHER_MAP_APP_ID, OPEN_WEATHER_MAP_LOCATION, MAX_FORECASTS);
   delete forecastClient;
   forecastClient = nullptr;
+  /*
+
+    time_t nowtime;
+    for (uint8_t i = 0; i < count; i++) {
+      Serial.printf("---\nForecast number: %d\n", i);
+      // {"dt":1527066000, uint32_t observationTime;
+      nowtime = forecasts[i].observationTime;
+      Serial.printf("observationTime: %d, full date: %s", forecasts[i].observationTime, ctime(&nowtime));
+      // "main":{
+      //   "temp":17.35, float temp;
+      Serial.printf("temp: %f\n", forecasts[i].temp);
+      //   "temp_min":16.89, float tempMin;
+      Serial.printf("tempMin: %f\n", forecasts[i].tempMin);
+      //   "temp_max":17.35, float tempMax;
+      Serial.printf("tempMax: %f\n", forecasts[i].tempMax);
+      //   "pressure":970.8, float pressure;
+      Serial.printf("pressure: %f\n", forecasts[i].pressure);
+      //   "sea_level":1030.62, float pressureSeaLevel;
+      Serial.printf("pressureSeaLevel: %f\n", forecasts[i].pressureSeaLevel);
+      //   "grnd_level":970.8, float pressureGroundLevel;
+      Serial.printf("pressureGroundLevel: %f\n", forecasts[i].pressureGroundLevel);
+      //   "humidity":97, uint8_t humidity;
+      Serial.printf("humidity: %d\n", forecasts[i].humidity);
+      //   "temp_kf":0.46
+      // },"weather":[{
+      //   "id":802, uint16_t weatherId;
+      Serial.printf("weatherId: %d\n", forecasts[i].weatherId);
+      //   "main":"Clouds", String main;
+      Serial.printf("main: %s\n", forecasts[i].main.c_str());
+      //   "description":"scattered clouds", String description;
+      Serial.printf("description: %s\n", forecasts[i].description.c_str());
+      //   "icon":"03d" String icon; String iconMeteoCon;
+      Serial.printf("icon: %s\n", forecasts[i].icon.c_str());
+      Serial.printf("iconMeteoCon: %s\n", forecasts[i].iconMeteoCon.c_str());
+      // }],"clouds":{"all":44}, uint8_t clouds;
+      Serial.printf("clouds: %d\n", forecasts[i].clouds);
+      // "wind":{
+      //   "speed":1.77, float windSpeed;
+      Serial.printf("windSpeed: %f\n", forecasts[i].windSpeed);
+      //   "deg":207.501 float windDeg;
+      Serial.printf("windDeg: %f\n", forecasts[i].windDeg);
+      // rain: {3h: 0.055}, float rain;
+      Serial.printf("rain: %f\n", forecasts[i].rain);
+      // },"sys":{"pod":"d"}
+      // dt_txt: "2018-05-23 09:00:00"   String observationTimeText;
+      Serial.printf("observationTimeText: %s\n", forecasts[i].observationTimeText.c_str());
+    }
+
+  */
+  time_t tnow = time(nullptr);
 
   Astronomy *astronomy = new Astronomy();
-  moonData = astronomy->calculateMoonData(time(nullptr));
+  moonData = astronomy->calculateMoonData(tnow);
   float lunarMonth = 29.53;
   moonAge = moonData.phase <= 4 ? lunarMonth * moonData.illumination / 2 : lunarMonth - moonData.illumination * lunarMonth / 2;
   moonAgeImage = String((char) (65 + ((uint8_t) ((26 * moonAge / 30) % 26))));
   delete astronomy;
   astronomy = nullptr;
+
+  SunMoonCalc smCalc = SunMoonCalc(tnow, _timeZone->getLat(), _timeZone->getLong());
+  sunAndMoonData = smCalc.calculateSunAndMoonData();
 }
 
 int WeatherClient::getMoonAge() {
@@ -80,18 +134,15 @@ String WeatherClient::getSunsetTime() {
 }
 
 String WeatherClient::getMoonriseTime() {
-  return "";
+  return  Util::getTime(&sunAndMoonData.moon.rise);
 }
 
 String WeatherClient::getMoonsetTime() {
-  return "";
+  return Util::getTime(&sunAndMoonData.moon.set);
 }
 
 String WeatherClient::getCurrentTemp() {
-  // int currentTemp = round(currentWeather.temp*10.0)/10.0;
-
-  int currentTemp = (int)(currentWeather.temp + 0.5);
-  return String(currentTemp);
+  return String((int)(currentWeather.temp + 0.5));
 }
 
 String WeatherClient::getWeatherText() {

@@ -45,6 +45,8 @@ class TimeZone {
     String getDateString();
     static String getDayString(uint8_t dayOfWeek);
     String getMonthString(uint8_t month);
+    double getLat();
+    double getLong();
    
   private:
     String httpsPost(const char* host, String url, String contentType, String data, int &errorCode);
@@ -60,6 +62,8 @@ class TimeZone {
     long lastTimeUpdate = 0;
     char ssid[MAX_SSID_LEN];
     bool ntpSyncEventTriggered;
+    double latitude;
+    double longitude;
 };
 
 #endif

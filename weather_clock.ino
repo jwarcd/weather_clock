@@ -1,4 +1,4 @@
-w/*
+/*
   Copyright (c) 2017 by Jared Gaillard
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -55,9 +55,6 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 GfxUi ui = GfxUi(&tft);
 TouchScreen touch = TouchScreen(&tft);
 
-// Weather
-WeatherClient weatherClient(IS_METRIC);
-
 // Prototypes
 void configModeCallback (WiFiManager *myWiFiManager);
 
@@ -66,6 +63,9 @@ Settings settings;
 
 // Time and time zone handling
 TimeZone timeZone(&settings);
+
+// Weather
+WeatherClient weatherClient(IS_METRIC, &timeZone);
 
 // WiFiManager
 // Local initialization. Once its business is done, there is no need to keep it around
