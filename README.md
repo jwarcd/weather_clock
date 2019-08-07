@@ -3,6 +3,11 @@
 This is an touch screen ESP8266 Weather Clock with mp3 Alarm sounds. 
 Based on the (ESP8266 WiFi Weather Station with Color TFT Display)[https://learn.adafruit.com/wifi-weather-station-with-tft-display/overview?view=all] project.
 
+### ESP8266 Board Package
+
+Install the ESP8266 Board Package
+Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Additional Board Manager URLs field in the Arduino v1.6.4+ preferences.
+
 ### Libraries:
 
 - [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
