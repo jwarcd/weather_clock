@@ -13,7 +13,8 @@ Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Addit
 - [Adafruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
 - [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341) OR
 - [Adafruit STMPE610 Library](https://github.com/adafruit/Adafruit_STMPE610)
-- [Adafruid Image Reader](https://github.com/adafruit/Adafruit_ImageReader)
+- [Adafruit Image Reader](https://github.com/adafruit/Adafruit_ImageReader)
+- [Mini Grafx by Daniel Eichhorn](https://github.com/ThingPulse/minigrafx)
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
 - [ESP8266 WifiClient](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266HTTPClient)
 - [WiFiManager for ESP8266](https://github.com/tzapu/WiFiManager)
