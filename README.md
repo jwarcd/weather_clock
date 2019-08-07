@@ -17,11 +17,12 @@ Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Addit
 - [Mini Grafx by Daniel Eichhorn](https://github.com/ThingPulse/minigrafx)
 - [ESP8266 Weather Station Library by ThingPulse](https://github.com/ThingPulse/esp8266-weather-station)
 - [Arduino JSON](https://github.com/bblanchon/ArduinoJson)
+- [Adafruit RTCLib(https://github.com/adafruit/RTClib)
+- [Adafruit FT6206 Library(https://github.com/adafruit/Adafruit_FT6206_Library)
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
 - [ESP8266 WifiClient](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266HTTPClient)
 - [WiFiManager for ESP8266](https://github.com/tzapu/WiFiManager)
 - [JSON Streaming Parser???](https://github.com/squix78/json-streaming-parser)
-- [ESP8266 Weather Station Library by ThingPulse](https://github.com/squix78/esp8266-weather-station)
 - [DFRobotDFPlayerMini](https://github.com/DFRobot/DFRobotDFPlayerMini)
 
 ### Hardware:
