@@ -19,6 +19,7 @@ Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Addit
 - [ESP8266 Weather Station Library by ThingPulse](https://github.com/ThingPulse/esp8266-weather-station)
 - [Arduino JSON](https://github.com/bblanchon/ArduinoJson)
 - [Adafruit RTCLib](https://github.com/adafruit/RTClib)
+- [Time Lib](https://playground.arduino.cc/code/time/)
 - [NTPClientLib](https://github.com/gmag11/NtpClient)
 - [Adafruit FT6206 Library](https://github.com/adafruit/Adafruit_FT6206_Library)
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
