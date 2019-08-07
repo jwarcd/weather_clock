@@ -15,6 +15,7 @@ Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Addit
 - [Adafruit STMPE610 Library](https://github.com/adafruit/Adafruit_STMPE610)
 - [Adafruit Image Reader](https://github.com/adafruit/Adafruit_ImageReader)
 - [Adafruit SPIFlash](https://github.com/adafruit/Adafruit_SPIFlash)
+- [Adafruit SdFat](https://github.com/adafruit/SdFat)
 - [Mini Grafx by Daniel Eichhorn](https://github.com/ThingPulse/minigrafx)
 - [ESP8266 Weather Station Library by ThingPulse](https://github.com/ThingPulse/esp8266-weather-station)
 - [Arduino JSON](https://github.com/bblanchon/ArduinoJson)
