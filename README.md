@@ -26,7 +26,7 @@ Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Addit
 - [ESP8266 Wifi](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi)
 - [ESP8266 WifiClient](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266HTTPClient)
 - [WiFiManager for ESP8266](https://github.com/tzapu/WiFiManager)
-- [JSON Streaming Parser???](https://github.com/squix78/json-streaming-parser)
+- [JSON Streaming Parser](https://github.com/squix78/json-streaming-parser)
 - [DFRobotDFPlayerMini](https://github.com/DFRobot/DFRobotDFPlayerMini)
 
 ### Hardware:
